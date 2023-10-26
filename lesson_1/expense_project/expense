@@ -2,4 +2,8 @@
 
 require "pg"
 
-puts "Hello World!"
+connection = PG.connect(dbname: "expenses")
+select_all = connection.exec("SELECT * FROM expenses;")
+select_all.each_row do |row|
+  puts row
+end
