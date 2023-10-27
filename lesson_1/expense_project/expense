@@ -2,8 +2,42 @@
 
 require "pg"
 
-connection = PG.connect(dbname: "expenses")
-select_all = connection.exec("SELECT * FROM expenses;")
-select_all.each_row do |row|
-  puts row
+def list
+  connection = PG.connect(dbname: "expenses")
+  select_all = connection.exec("SELECT * FROM expenses;")
+  select_all.each do |row|
+    columns = [row["id"].rjust(3),
+               row["created_on"].rjust(10),
+               row["amount"].rjust(12),
+               row["memo"]]
+    puts columns.join(" | ")
+  end
+
+  connection.close
 end
+
+def help_content
+  help_content = <<~HEREDOC
+  Commands:
+  
+  add AMOUNT MEMO - record a new expense
+  clear - delete all expenses
+  list - list all expenses
+  delete NUMBER - remove expense with id NUMBER
+  search QUERY - list expenses with a matching memo field
+  HEREDOC
+
+  puts help_content
+end
+
+def main
+  if ARGV.empty?
+    help_content
+  else
+    method = ARGV[0].to_sym
+  end
+
+  send(method)
+end
+
+main
