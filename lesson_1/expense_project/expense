@@ -29,8 +29,7 @@ def display_help
 end
 
 def add_expense(amount, memo)
-  date = Date.today
-  sql = "INSERT INTO expenses (amount, memo) VALUES (#{amount}, '#{memo}', '#{date}')"
+  sql = "INSERT INTO expenses (amount, memo, created_on) VALUES (#{amount}, '#{memo}', NOW())"
   CONNECTION.exec(sql)
 end
 
