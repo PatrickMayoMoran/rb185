@@ -9,3 +9,10 @@ CREATE TABLE expenses (
 
 ALTER TABLE expenses
 ADD CONSTRAINT positive_amounts_only CHECK(amount > 0);
+
+INSERT INTO expenses (amount, memo, created_on)
+VALUES
+(5.05, 'espresso', NOW()),
+(120.43, 'cleats', NOW()),
+(61, 'house shoes', NOW())
+;

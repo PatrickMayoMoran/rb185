@@ -2,22 +2,24 @@
 
 require "pg"
 
-def list
+def list_expenses
   connection = PG.connect(dbname: "expenses")
-  select_all = connection.exec("SELECT * FROM expenses;")
-  select_all.each do |row|
+
+  result = connection.exec("SELECT * FROM expenses ORDER BY created_on ASC;")
+  result.each do |row|
     columns = [row["id"].rjust(3),
                row["created_on"].rjust(10),
                row["amount"].rjust(12),
                row["memo"]]
+
     puts columns.join(" | ")
   end
 
   connection.close
 end
 
-def help_content
-  help_content = <<~HEREDOC
+def display_help
+  puts <<~HELP
   Commands:
   
   add AMOUNT MEMO - record a new expense
@@ -25,19 +27,13 @@ def help_content
   list - list all expenses
   delete NUMBER - remove expense with id NUMBER
   search QUERY - list expenses with a matching memo field
-  HEREDOC
-
-  puts help_content
+  HELP
 end
 
-def main
-  if ARGV.empty?
-    help_content
-  else
-    method = ARGV[0].to_sym
-  end
+command = ARGV.first
 
-  send(method)
+if command == "list"
+  list_expenses
+else
+  display_help
 end
-
-main
