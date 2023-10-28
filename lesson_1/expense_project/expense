@@ -2,10 +2,10 @@
 
 require "pg"
 
-def list_expenses
-  connection = PG.connect(dbname: "expenses")
+CONNECTION = PG.connect(dbname: "expenses")
 
-  result = connection.exec("SELECT * FROM expenses ORDER BY created_on ASC;")
+def list_expenses
+  result = CONNECTION.exec("SELECT * FROM expenses ORDER BY created_on ASC;")
   result.each do |row|
     columns = [row["id"].rjust(3),
                row["created_on"].rjust(10),
@@ -14,8 +14,6 @@ def list_expenses
 
     puts columns.join(" | ")
   end
-
-  connection.close
 end
 
 def display_help
@@ -31,7 +29,6 @@ def display_help
 end
 
 def add_expense(amount, memo)
-  connection = PG.connect(dbname: "expenses")
 
   connection.exec("INSERT INTO expenses (amount, memo) VALUES (#{amount}, '#{memo}')")
 end
