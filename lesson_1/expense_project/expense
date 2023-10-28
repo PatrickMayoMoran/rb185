@@ -41,10 +41,8 @@ if command == "list"
 elsif command == "add"
   amount = ARGV[1]
   memo = ARGV[2]
-  add_expense(amount, memo) if amount && memo
-  if amount.nil? || memo.nil?
-    puts "You must provide an amount and memo."
-  end
+  abort "You must provide an amount and memo." unless amount && memo
+  add_expense(amount, memo)
 else
   display_help
 end
