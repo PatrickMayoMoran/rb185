@@ -30,6 +30,12 @@ def display_help
   HELP
 end
 
+def add_expense(amount, memo)
+  connection = PG.connect(dbname: "expenses")
+
+  connection.exec("INSERT INTO expenses (amount, memo) VALUES #{amount} \"#{memo}\"")
+end
+
 command = ARGV.first
 
 if command == "list"
