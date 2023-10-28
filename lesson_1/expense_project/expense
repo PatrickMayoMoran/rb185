@@ -40,6 +40,13 @@ command = ARGV.first
 
 if command == "list"
   list_expenses
+elsif command == "add"
+  amount = ARGV[1]
+  memo = ARGV[2]
+  add_expense(amount, memo) if amount && memo
+  if amount.nil? || memo.nil?
+    puts "You must provide an amount and memo."
+  end
 else
   display_help
 end
