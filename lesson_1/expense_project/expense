@@ -31,8 +31,8 @@ class CLI
     when "list"
       @expense_data.list_expenses
     when "search"
-      term = arguments[0]
-      @expense_data.search(term)
+      query = arguments[0]
+      @expense_data.search_expenses(query)
     else
       display_help
     end
@@ -47,14 +47,7 @@ class ExpenseData
 
   def list_expenses
     result = @connection.exec("SELECT * FROM expenses ORDER BY created_on ASC;")
-    result.each do |row|
-      columns = [row["id"].rjust(3),
-                 row["created_on"].rjust(10),
-                 row["amount"].rjust(12),
-                 row["memo"]]
-  
-      puts columns.join(" | ")
-    end
+    display_expenses(result)
   end
 
   def add_expense(amount, memo)
@@ -63,15 +56,20 @@ class ExpenseData
     @connection.exec_params(sql, params)
   end
 
-  def search(term)
-    sql = "SELECT * FROM expenses WHERE position($1 in memo) != 0;"
-    result = @connection.exec_params(sql, [term])
+  def search_expenses(query)
+    sql = "SELECT * FROM expenses WHERE memo ILIKE $1"
+    result = @connection.exec_params(sql, ["%#{query}%"])
+    display_expenses(result)
+  end
 
-    result.each do |row|
-      columns = [row["id"].rjust(3),
-                 row["created_on"].rjust(10),
-                 row["amount"].rjust(12),
-                 row["memo"]]
+  private
+
+  def display_expenses(expenses)
+    expenses.each do |tuple|
+      columns = [tuple["id"].rjust(3),
+                 tuple["created_on"].rjust(10),
+                 tuple["amount"].rjust(12),
+                 tuple["memo"]]
   
       puts columns.join(" | ")
     end
