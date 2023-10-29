@@ -29,8 +29,9 @@ def display_help
 end
 
 def add_expense(amount, memo)
-  sql = "INSERT INTO expenses (amount, memo, created_on) VALUES (#{amount}, '#{memo}', NOW())"
-  CONNECTION.exec(sql)
+  sql = "INSERT INTO expenses (amount, memo, created_on) VALUES ($1, $2, $3)"
+  params = [amount, memo, "NOW()"]
+  CONNECTION.exec_params(sql, params)
 end
 
 command = ARGV.first
