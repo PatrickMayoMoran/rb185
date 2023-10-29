@@ -19,16 +19,17 @@ class CLI
     HELP
   end
 
-  def run(argv)
-    command = argv.first
+  def run(arguments)
+    command = arguments.shift
 
-    if command == "list"
-      @expense_data.list_expenses
-    elsif command == "add"
-      amount = argv[1]
-      memo = argv[2]
+    case command
+    when "add"
+      amount = arguments[0]
+      memo = arguments[1]
       abort "You must provide an amount and memo." unless amount && memo
       @expense_data.add_expense(amount, memo)
+    when "list"
+      @expense_data.list_expenses
     else
       display_help
     end
