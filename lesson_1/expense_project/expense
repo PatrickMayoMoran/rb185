@@ -30,6 +30,9 @@ class CLI
       @expense_data.add_expense(amount, memo)
     when "list"
       @expense_data.list_expenses
+    when "search"
+      term = arguments[0]
+      @expense_data.search(term)
     else
       display_help
     end
@@ -58,6 +61,20 @@ class ExpenseData
     sql = "INSERT INTO expenses (amount, memo, created_on) VALUES ($1, $2, $3)"
     params = [amount, memo, "NOW()"]
     @connection.exec_params(sql, params)
+  end
+
+  def search(term)
+    sql = "SELECT * FROM expenses WHERE position($1 in memo) != 0;"
+    result = @connection.exec_params(sql, [term])
+
+    result.each do |row|
+      columns = [row["id"].rjust(3),
+                 row["created_on"].rjust(10),
+                 row["amount"].rjust(12),
+                 row["memo"]]
+  
+      puts columns.join(" | ")
+    end
   end
 end
 
