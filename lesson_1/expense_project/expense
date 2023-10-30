@@ -39,8 +39,8 @@ class CLI
       @expense_data.delete_expense(id)
     when "clear"
       puts "This will remove all expenses. Are you sure? (y/n)"
-      input = gets.chomp
-      @expense_data.delete_all_expenses if input.downcase.start_with?("y")
+      response = $stdin.getch
+      @expense_data.delete_all_expenses if response == 'y'
     else
       display_help
     end
