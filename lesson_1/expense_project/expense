@@ -55,7 +55,7 @@ class ExpenseData
 
   def list_expenses
     result = @connection.exec("SELECT * FROM expenses ORDER BY created_on ASC;")
-    abort "There are no expenses." if result.ntuples == 0
+    display_count(result)
     display_expenses(result)
   end
 
@@ -92,6 +92,10 @@ class ExpenseData
   end
 
   private
+
+  def display_count(result)
+    abort "There are no expenses." if result.ntuples == 0
+  end
 
   def display_expenses(expenses)
     expenses.each do |tuple|
