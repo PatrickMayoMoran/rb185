@@ -66,13 +66,12 @@ class ExpenseData
   end
 
   def delete_expense(id)
-    puts "deleting expense text..."
-    # identify whether or not id exists
-    # if it doesn't, abort with message
-    #   There is no expense with the id '#{id}'
+    sql = "SELECT * FROM expenses WHERE id = $1;"
+    result = @connection.exec_params(sql, [id])
+    abort "There is no expense with the id '#{id}'" if result.ntuples == 0
     # if it does, display delete message
-    #   The following expense has been deleted:
-    #   display (to be deleted expense)
+    puts "The following expense has been deleted:"
+    display_expenses(result)
     #   delete expense
   end
 
