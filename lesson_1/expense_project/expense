@@ -57,7 +57,7 @@ class ExpenseData
     result = @connection.exec("SELECT * FROM expenses ORDER BY created_on ASC;")
     display_count(result)
     display_expenses(result)
-    display_sum(result)
+    display_count(result)
   end
 
   def add_expense(amount, memo)
@@ -71,7 +71,7 @@ class ExpenseData
     result = @connection.exec_params(sql, ["%#{query}%"])
     display_count(result)
     display_expenses(result)
-    display_sum(result)
+    display_count(result)
   end
 
   def delete_expense(id)
@@ -96,7 +96,7 @@ class ExpenseData
 
   private
 
-  def display_sum(result)
+  def display_count(result)
     total = result.reduce(0) { |memo, expense| memo + expense["amount"].to_f }
     puts "Total     #{total.round(2)}"
   end
