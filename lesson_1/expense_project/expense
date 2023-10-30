@@ -84,6 +84,10 @@ class ExpenseData
     end
   end
 
+  def clear
+    puts "All expenses have been deleted."
+  end
+
   private
 
   def display_expenses(expenses)
