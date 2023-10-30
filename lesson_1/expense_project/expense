@@ -1,6 +1,7 @@
 #! /usr/bin/env ruby
 
 require "pg"
+require "io/console"
 
 class CLI
   def initialize
