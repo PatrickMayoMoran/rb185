@@ -66,6 +66,7 @@ class ExpenseData
   end
 
   def delete_expense(id)
+    puts "deleting expense text..."
     # identify whether or not id exists
     # if it doesn't, abort with message
     #   There is no expense with the id '#{id}'
