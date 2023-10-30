@@ -85,6 +85,7 @@ class ExpenseData
   end
 
   def clear
+    @connection.exec("DELETE FROM expenses;")
     puts "All expenses have been deleted."
   end
 
