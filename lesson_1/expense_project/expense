@@ -98,8 +98,8 @@ class ExpenseData
   def setup_schema
     sql = "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'expenses';"
     result = @connection.exec(sql)
-    count = result.field_values("count")[0]
-    unless count == "1"
+
+    if result[0]["count"] == 0
       sql = <<~CREATE_TABLE
         CREATE TABLE expenses (
           id serial PRIMARY KEY,
