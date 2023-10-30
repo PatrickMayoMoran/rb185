@@ -69,10 +69,11 @@ class ExpenseData
     sql = "SELECT * FROM expenses WHERE id = $1;"
     result = @connection.exec_params(sql, [id])
     abort "There is no expense with the id '#{id}'" if result.ntuples == 0
-    # if it does, display delete message
+
     puts "The following expense has been deleted:"
     display_expenses(result)
-    #   delete expense
+    delete_sql = "DELETE FROM expenses WHERE id = $1"
+    @connection.exec_params(delete_sql, [id])
   end
 
   private
