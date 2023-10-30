@@ -96,13 +96,23 @@ class ExpenseData
   private
 
   def setup_schema
-    sql = "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'doesnotexist';"
+    sql = "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'expenses';"
     result = @connection.exec(sql)
     count = result.field_values("count")[0]
-    if count == 0
-      sql = <<~CREATE_DATABASE
+    unless count == 1
+      sql = <<~CREATE_TABLE
+        CREATE TABLE expenses (
+          id serial PRIMARY KEY,
+          amount numeric(6,2) NOT NULL,
+          memo text NOT NULL,
+          created_on date NOT NULL
+        );
+        
+        ALTER TABLE expenses
+        ADD CONSTRAINT positive_amounts_only CHECK(amount > 0);
+      CREATE_TABLE
 
-      CREATE_DATABASE
+      @connection.exec(sql)
     end
   end
 
