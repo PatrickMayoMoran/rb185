@@ -95,6 +95,12 @@ class ExpenseData
 
   def display_count(result)
     abort "There are no expenses." if result.ntuples == 0
+    count = result.ntuples
+    if count == 1
+      puts "There is 1 expense."
+    else
+      puts "There are #{count} expenses."
+    end
   end
 
   def display_expenses(expenses)
