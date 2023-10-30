@@ -51,6 +51,7 @@ class ExpenseData
 
   def initialize
     @connection = PG.connect(dbname: "expenses")
+    setup_schema
   end
 
   def list_expenses
@@ -93,6 +94,9 @@ class ExpenseData
   end
 
   private
+
+  def setup_schema
+  end
 
   def display_count(result)
     abort "There are no expenses." if result.ntuples == 0
