@@ -36,6 +36,10 @@ class CLI
     when "delete"
       id = arguments[0]
       @expense_data.delete_expense(id)
+    when "clear"
+      puts "This will remove all expenses. Are you sure? (y/n)"
+      input = gets.chomp
+      @expense_data.clear if input.downcase.start_with?("y")
     else
       display_help
     end
