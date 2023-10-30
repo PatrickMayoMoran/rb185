@@ -62,6 +62,16 @@ class ExpenseData
     display_expenses(result)
   end
 
+  def delete_expense(id)
+    # identify whether or not id exists
+    # if it doesn't, abort with message
+    #   There is no expense with the id '#{id}'
+    # if it does, display delete message
+    #   The following expense has been deleted:
+    #   display (to be deleted expense)
+    #   delete expense
+  end
+
   private
 
   def display_expenses(expenses)
