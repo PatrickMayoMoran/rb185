@@ -68,12 +68,16 @@ class ExpenseData
   def delete_expense(id)
     sql = "SELECT * FROM expenses WHERE id = $1;"
     result = @connection.exec_params(sql, [id])
-    abort "There is no expense with the id '#{id}'" if result.ntuples == 0
 
-    puts "The following expense has been deleted:"
-    display_expenses(result)
-    delete_sql = "DELETE FROM expenses WHERE id = $1"
-    @connection.exec_params(delete_sql, [id])
+    if result.ntuples == 1
+      sql = "DELETE FROM expenses WHERE id = $1"
+      @connection.exec_params(sql, [id])
+
+      puts "The following expense has been deleted:"
+      display_expenses(result)
+    else
+      puts "There is no expense with the id '#{id}'."
+    end
   end
 
   private
