@@ -71,6 +71,7 @@ class ExpenseData
     result = @connection.exec_params(sql, ["%#{query}%"])
     display_count(result)
     display_expenses(result)
+    display_sum(result)
   end
 
   def delete_expense(id)
