@@ -68,6 +68,7 @@ class ExpenseData
   def search_expenses(query)
     sql = "SELECT * FROM expenses WHERE memo ILIKE $1"
     result = @connection.exec_params(sql, ["%#{query}%"])
+    display_count(result)
     display_expenses(result)
   end
 
