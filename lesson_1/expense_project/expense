@@ -39,7 +39,7 @@ class CLI
     when "clear"
       puts "This will remove all expenses. Are you sure? (y/n)"
       input = gets.chomp
-      @expense_data.clear if input.downcase.start_with?("y")
+      @expense_data.delete_all_expenses if input.downcase.start_with?("y")
     else
       display_help
     end
@@ -84,7 +84,7 @@ class ExpenseData
     end
   end
 
-  def clear
+  def delete_all_expenses
     @connection.exec("DELETE FROM expenses;")
     puts "All expenses have been deleted."
   end
