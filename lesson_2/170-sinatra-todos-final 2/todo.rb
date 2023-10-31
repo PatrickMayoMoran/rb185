@@ -61,7 +61,7 @@ class SessionPersistence
   end
 
   def set_success(message)
-    session[:success] = message
+    @session[:success] = message
   end
 end
 
