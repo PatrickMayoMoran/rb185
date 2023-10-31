@@ -101,7 +101,7 @@ end
 
 # View list of lists
 get "/lists" do
-  @lists = session[:lists]
+  @lists = @storage.all_lists
   erb :lists, layout: :layout
 end
 
@@ -119,8 +119,8 @@ post "/lists" do
     session[:error] = error
     erb :new_list, layout: :layout
   else
-    id = next_element_id(session[:lists])
-    session[:lists] << { id: id, name: list_name, todos: [] }
+    id = next_element_id(@storage.all_lists)
+    @storage.all_lists << { id: id, name: list_name, todos: [] }
     session[:success] = "The list has been created."
     redirect "/lists"
   end
@@ -160,7 +160,7 @@ end
 # Delete a todo list
 post "/lists/:id/destroy" do
   id = params[:id].to_i
-  session[:lists].reject! { |list| list[:id] == id }
+  @storage.all_lists.reject! { |list| list[:id] == id }
   session[:success] = "The list has been deleted."
   if env["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest"
     "/lists"
