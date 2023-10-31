@@ -49,4 +49,11 @@ class SessionPersistence
       todo[:completed] = true
     end
   end
+
+  private
+
+  def next_element_id(elements)
+    max = elements.map { |todo| todo[:id] }.max || 0
+    max + 1
+  end
 end
