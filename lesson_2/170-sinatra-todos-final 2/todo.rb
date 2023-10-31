@@ -48,6 +48,10 @@ class SessionPersistence
     @session[:lists] ||= []
   end
 
+  def all_lists
+    @session[:lists]
+  end
+
   def find_list(id)
     @session[:lists].find{ |list| list[:id] == id }
   end
@@ -70,7 +74,7 @@ end
 def error_for_list_name(name)
   if !(1..100).cover? name.size
     "List name must be between 1 and 100 characters."
-  elsif session[:lists].any? { |list| list[:name] == name }
+  elsif @storage.all_lists.any? { |list| list[:name] == name }
     "List name must be unique."
   end
 end
