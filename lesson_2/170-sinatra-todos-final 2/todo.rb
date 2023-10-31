@@ -41,8 +41,20 @@ helpers do
   end
 end
 
+class SessionPersistence
+
+  def initialize(session)
+    @session = session
+    @session[:lists] ||= []
+  end
+
+  def find_list(id)
+    @session[:lists].find{ |list| list[:id] == id }
+  end
+end
+
 def load_list(id)
-  list = session[:lists].find{ |list| list[:id] == id }
+  list = @storage.find_list(id)
   return list if list
 
   session[:error] = "The specified list was not found."
@@ -72,7 +84,7 @@ def next_element_id(elements)
 end
 
 before do
-  session[:lists] ||= []
+  @storage = SessionPersistence.new(session)
 end
 
 get "/" do
