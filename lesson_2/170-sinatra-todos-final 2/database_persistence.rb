@@ -1,7 +1,8 @@
+require "pg"
+
 class DatabasePersistence
   def initialize(session)
-   # @session = session
-   # @session[:lists] ||= []
+    @db = PG.connect(dbname: "todos")
   end
 
   def find_list(id)
