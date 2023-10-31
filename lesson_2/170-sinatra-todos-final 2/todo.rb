@@ -63,6 +63,11 @@ class SessionPersistence
   def set_success(message)
     @session[:success] = message
   end
+
+  def create_new_list(list_name)
+    id = next_element_id(@session[:lists])
+    @session[:lists] << { id: id, name: list_name, todos: [] }
+  end
 end
 
 def load_list(id)
@@ -123,8 +128,7 @@ post "/lists" do
     @storage.set_error(error)
     erb :new_list, layout: :layout
   else
-    id = next_element_id(@storage.all_lists)
-    @storage.all_lists << { id: id, name: list_name, todos: [] }
+    @storage.create_new_list(list_name)
     @storage.set_success("The list has been created.")
     redirect "/lists"
   end
