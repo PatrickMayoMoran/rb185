@@ -51,13 +51,17 @@ class SessionPersistence
   def find_list(id)
     @session[:lists].find{ |list| list[:id] == id }
   end
+
+  def set_error(message)
+    @session[:error] = message
+  end
 end
 
 def load_list(id)
   list = @storage.find_list(id)
   return list if list
 
-  session[:error] = "The specified list was not found."
+  @storage.set_error("The specified list was not found.")
   redirect "/lists"
   halt
 end
