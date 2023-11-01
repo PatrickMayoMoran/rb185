@@ -7,7 +7,7 @@ class DatabasePersistence
   end
 
   def query(statement, *params)
-    puts "#{statement}: #{params}"
+    @logger.info "#{statement}: #{params}"
     @db.exec_params(statement, params)
   end
 
