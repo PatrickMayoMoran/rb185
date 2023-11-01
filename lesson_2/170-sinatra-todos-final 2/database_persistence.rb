@@ -24,13 +24,14 @@ class DatabasePersistence
     result = query(sql)
 
     result.map do |tuple|
-      id = tuple["id"]
-      sql = "SELECT * FROM todos WHERE list_id = $1"
-      todos_result = query(sql, id)
-      todos = []
-      todos_result.each { |todo| todos << todo }
+      list_id = tuple["id"]
+      todo_sql = "SELECT * FROM todos WHERE list_id = $1"
+      todos_result = query(todo_sql, list_id)
+      todos = todos_result.map do |todo|
+        {id: todo["id"], name: todo["name"], completed: todo["completed"]}
+      end
 
-      {id: tuple["id"], name: tuple["name"], todos: todos}
+      {id: list_id, name: tuple["name"], todos: todos}
     end
   end
 
