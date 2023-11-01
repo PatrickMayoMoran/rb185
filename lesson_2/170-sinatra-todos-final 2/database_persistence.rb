@@ -6,7 +6,10 @@ class DatabasePersistence
   end
 
   def find_list(id)
-   # @session[:lists].find { |l| l[:id] == id }
+    sql = "SELECT * FROM lists WHERE id = $1"
+    result = @db.exec_params(sql, [id])
+    tuple = result.first
+    {id: tuple["id"], name: tuple["name"], todos: []}
   end
 
   def all_lists
